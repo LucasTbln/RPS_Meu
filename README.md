@@ -32,7 +32,21 @@ Resume as características do contorno nunha táboa co formato:
 
 Contorno de tarefas | Observable| Axentes | Determinista | Episódico | Estático | Discreto | Coñecido
 :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
- RPS | - | - | - | - | - |  - |  - |
+ RPS | Partially | Multi | Stochastic | Episodic | Static |  Discrete |  Known |
+
+**Observable:** Considero que só é parcialmente observable, debido a que o axente non sabe cal será a xogada do ser human antes de elixir, polo que non ten tódala información do entorno.
+
+**Axentes:** É multiaxente, dado que temos a dous xogadores, o humano e a IA. 
+
+**Determinista:** Aínda que as reglas do xogo son deterministas, coma a IA non sabe que vai a facer o humano, isto é impredicible para ela, polo que sería estocástico.
+
+**Episódico:** Cada ronda é independente, non afecta á seguinte(A non ser que a IA teña un algoritmo programado para detectar patróns nas xogadas e axustar a súa estratexia, nese caso sería secuencial).
+
+**Estático:** O entorno non cambia mentres o axente decide, é estático.
+
+**Discreto:** Hai 3(ou 5, con RPSLS) accións dispoñibles, é discreto.
+
+**Coñecido:** As regras do xogo están claramente definidas, polo que son coñecidas pola IA.
 
 No libro atoparás unha táboa semellante:
 
@@ -54,6 +68,23 @@ A partires do modelo xeral de axente intelixente da figura:
 - Axentes baseados en utilidade.
 
 Cada clase de axente combina compoñentes particulares dun modo particular para xerar as accións. 
+
+
+Elixo os dous modelos que considero máis adecuados para este axente.
+
+## Axente reactivo simple
+
+É adecuado para o que queremos porque dependendo da estratexia que usemos o axente pode non requerir memoria ao xogar aleatoriamente ou só reaccionando ás xogadas do rival.
+
+![Modelo simple](./doc/ModeloSimple.jpeg)
+
+## Axente baseado en utilidade
+
+Con este modelo o axente pode calcular as probabilidades, escoller a xogada que maximiza as probabilidades de victoria(Estudando os movementos do rival ou doutra forma) e é máis intelixente que o reactivo
+
+
+![Modelo utilidade](./doc/ModeloUtilidade.jpeg)
+
 
 ## Implementación - Simulando IA
 
@@ -117,3 +148,7 @@ A rúbrica da implementación Python [na segunda folla "RPS" deste libro de cál
 - Estende a lóxica do axente para xogar á versión "pedra, papel, tesoiras, lagarto, Spock" correctamente, mantendo a calidade do código e a coherencia co tipo de axente seleccionado. 
 
 - A documentación no README do proxecto en GitHub/GitLab deber estar completa seguindo a orde especificada nesta rúbrica, explicando o problema, a contorna de tarefas, a estrutura do axente, a implementación e a extensión, cun formato Markdown axeitado.
+
+
+
+
