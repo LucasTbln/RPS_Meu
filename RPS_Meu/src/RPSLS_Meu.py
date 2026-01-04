@@ -1,8 +1,9 @@
 import random
 from enum import IntEnum
+from collections import Counter, deque
 
 
-class GameAction(IntEnum):
+class GameAction(IntEnum): #Xogadas posibles
     Rock = 0
     Paper = 1
     Scissors = 2
@@ -11,68 +12,112 @@ class GameAction(IntEnum):
 
 
 class GameResult(IntEnum):
-    Victory = 1   # Computadora gana
-    Defeat = -1   # Computadora pierde
-    Tie = 0       # Empate
+    Victory = 1
+    Defeat = -1
+    Tie = 0
 
 
-# Diccionario con regras de a que lle gana cada xogada
-WIN_RULES = {
-    GameAction.Rock: [GameAction.Scissors, GameAction.Lizard],
-    GameAction.Paper: [GameAction.Rock, GameAction.Spock],
-    GameAction.Scissors: [GameAction.Paper, GameAction.Lizard],
-    GameAction.Lizard: [GameAction.Spock, GameAction.Paper],
-    GameAction.Spock: [GameAction.Scissors, GameAction.Rock],
-}
+last_user_actions = deque(maxlen=5)
+all_user_actions = []
+last_results = deque(maxlen=5)
 
 
 def assess_game(user_action, computer_action):
 
     if user_action == computer_action:
         print(f"User and computer picked {user_action.name}. Draw game!")
-        return GameResult.Tie
+        result = GameResult.Tie
 
-    elif computer_action in WIN_RULES[user_action]: #Comproba se está nas regras de victoria
-        print(f"{user_action.name} beats {computer_action.name}. You won!")
-        return GameResult.Defeat  # Computadora perde
+    elif user_action == GameAction.Rock:
+        if computer_action in (GameAction.Scissors, GameAction.Lizard):
+            print("Rock crushes scissors/lizard. You won!")
+            result = GameResult.Defeat
+        else:
+            print("Paper or Spock beats rock. You lost!")
+            result = GameResult.Victory
 
-    else:
-        print(f"{computer_action.name} beats {user_action.name}. You lost!")
-        return GameResult.Victory  # Computadora gana
+    elif user_action == GameAction.Paper:
+        if computer_action in (GameAction.Rock, GameAction.Spock):
+            print("Paper covers rock or disproves Spock. You won!")
+            result = GameResult.Defeat
+        else:
+            print("Scissors or lizard beats paper. You lost!")
+            result = GameResult.Victory
+
+    elif user_action == GameAction.Scissors:
+        if computer_action in (GameAction.Paper, GameAction.Lizard):
+            print("Scissors cuts paper or decapitates lizard. You won!")
+            result = GameResult.Defeat
+        else:
+            print("Rock or Spock beats scissors. You lost!")
+            result = GameResult.Victory
+
+    elif user_action == GameAction.Lizard:
+        if computer_action in (GameAction.Spock, GameAction.Paper):
+            print("Lizard poisons Spock or eats paper. You won!")
+            result = GameResult.Defeat
+        else:
+            print("Rock or scissors beats lizard. You lost!")
+            result = GameResult.Victory
+
+    elif user_action == GameAction.Spock:
+        if computer_action in (GameAction.Scissors, GameAction.Rock):
+            print("Spock smashes scissors or vaporizes rock. You won!")
+            result = GameResult.Defeat
+        else:
+            print("Paper or lizard beats Spock. You lost!")
+            result = GameResult.Victory
+
+    last_user_actions.append(user_action)
+    all_user_actions.append(user_action)
+    last_results.append(result)
+
+    return result
+
+
+def counter_action(action):
+
+    counters = { #A que lle gaá cada xogada
+        GameAction.Rock: [GameAction.Paper, GameAction.Spock],
+        GameAction.Paper: [GameAction.Scissors, GameAction.Lizard],
+        GameAction.Scissors: [GameAction.Rock, GameAction.Spock],
+        GameAction.Lizard: [GameAction.Rock, GameAction.Scissors],
+        GameAction.Spock: [GameAction.Paper, GameAction.Lizard]
+    }
+
+    return random.choice(counters[action])
 
 
 def get_computer_action():
-    computer_selection = random.randint(0, len(GameAction) - 1)
-    computer_action = GameAction(computer_selection)
-    print(f"Computer picked {computer_action.name}.")
-    return computer_action
 
+    if random.random() < 0.25:
+        action = GameAction(random.randint(0, len(GameAction) - 1))
+        print(f"Computer picked {action.name} (random).")
+        return action
 
-def get_user_action():
-    game_choices = [f"{game_action.name}[{game_action.value}]" for game_action in GameAction]
-    game_choices_str = ", ".join(game_choices)
-    while True:
-        try:
-            user_selection = int(input(f"\nPick a choice ({game_choices_str}): "))
-            return GameAction(user_selection)
-        except (ValueError, IndexError):
-            print(f"Invalid selection. Pick a number between 0 and {len(GameAction)-1}!")
+    if len(last_results) == 5:
+        defeats = last_results.count(GameResult.Defeat)
+        victories = last_results.count(GameResult.Victory)
+        ties = last_results.count(GameResult.Tie)
 
+        if defeats > victories + ties:
+            common_action = Counter(all_user_actions).most_common(1)[0][0]
+            action = counter_action(common_action)
+            print(f"Computer picked {action.name} (counter-most-used).")
+            return action
 
-def play_another_round():
-    another_round = input("\nAnother round? (y/n): ")
-    return another_round.lower() == 'y'
+    if len(last_user_actions) >= 2:
+        if last_user_actions[-1] == last_user_actions[-2]:
+            action = counter_action(last_user_actions[-1])
+            print(f"Computer picked {action.name} (anti-repeat).")
+            return action
 
+    if last_user_actions:
+        common_action = Counter(last_user_actions).most_common(1)[0][0]
+        action = counter_action(common_action)
+        print(f"Computer picked {action.name} (strategy).")
+        return action
 
-def main():
-    while True:
-        user_action = get_user_action()
-        computer_action = get_computer_action()
-        assess_game(user_action, computer_action)
-
-        if not play_another_round():
-            break
-
-
-if __name__ == "__main__":
-    main()
+    action = GameAction(random.randint(0, len(GameAction) - 1))
+    print(f"Computer picked {action.name}.")
+    return action
