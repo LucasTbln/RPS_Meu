@@ -1,0 +1,33 @@
+import pytest
+from src.RPS_Meu import GameAction, GameResult, assess_game
+
+
+@pytest.mark.parametrize("action", [
+    GameAction.Rock,
+    GameAction.Paper,
+    GameAction.Scissors
+])
+# Test empates
+def test_draw(action):
+    assert assess_game(action, action) == GameResult.Tie
+
+# Test pedra
+def test_rock_wins_against_scissors():
+    assert assess_game(GameAction.Rock, GameAction.Scissors) == GameResult.Defeat
+
+def test_rock_loses_against_paper():
+    assert assess_game(GameAction.Rock, GameAction.Paper) == GameResult.Victory
+
+# Test papel
+def test_paper_wins_against_rock():
+    assert assess_game(GameAction.Paper, GameAction.Rock) == GameResult.Defeat
+
+def test_paper_loses_against_scissors():
+    assert assess_game(GameAction.Paper, GameAction.Scissors) == GameResult.Victory
+
+# Test tesoiras
+def test_scissors_wins_against_paper():
+    assert assess_game(GameAction.Scissors, GameAction.Paper) == GameResult.Defeat
+
+def test_scissors_loses_against_rock():
+    assert assess_game(GameAction.Scissors, GameAction.Rock) == GameResult.Victory
