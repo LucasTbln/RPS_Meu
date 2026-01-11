@@ -150,5 +150,9 @@ A rúbrica da implementación Python [na segunda folla "RPS" deste libro de cál
 - A documentación no README do proxecto en GitHub/GitLab deber estar completa seguindo a orde especificada nesta rúbrica, explicando o problema, a contorna de tarefas, a estrutura do axente, a implementación e a extensión, cun formato Markdown axeitado.
 
 
+## Estratexia actual do axente
 
+A estratexia pola que fixen que funcione o axente é que garde as 5 últimas xogadas e xogue contra a xogada máis usada destas. Se vei que nestas 5 últimas xogadas perdeu máis do que gañou e empatou, pasa a xogar contra a xogada máis usada en xeral. Tamén hai unha probabilidade do 25% de que faga unha xogada aleatoria.
+
+Con esta estratexia a IA continúa a adaptarse ao estado actual da partida e a aleatoriedade e cambio de estratexia axudan a que non se lle poda predicir con tanta doadez.
 
