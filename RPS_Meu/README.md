@@ -152,7 +152,11 @@ A rúbrica da implementación Python [na segunda folla "RPS" deste libro de cál
 
 ## Estratexia actual do axente
 
-A estratexia pola que fixen que funcione o axente é que garde as 5 últimas xogadas e xogue contra a xogada máis usada destas. Se vei que nestas 5 últimas xogadas perdeu máis do que gañou e empatou, pasa a xogar contra a xogada máis usada en xeral. Tamén hai unha probabilidade do 25% de que faga unha xogada aleatoria.
+A estratexia pola que fixen que funcione o axente é que garde as 5 últimas xogadas e xogue contra a xogada máis usada destas. Se vei que nestas 5 últimas xogadas perdeu máis do que gañou e empatou, pasa a xogar contra a xogada máis usada en xeral. Tamén hai unha probabilidade do 25% de que faga unha xogada aleatoria. Por último, se detecta que o xogador fixo dúas veces a mesma xogada predecirá que vai a sacar outra vez o mesmo e sacará a súa contra.
 
-Con esta estratexia a IA continúa a adaptarse ao estado actual da partida e a aleatoriedade e cambio de estratexia axudan a que non se lle poda predicir con tanta doadez.
+Con esta estratexia a IA continúa a adaptarse ao estado actual da partida e a aleatoriedade e cambio de estratexia axudan a que non se lle poda predicir con tanta doadez, está feita especificamente para contrarestar a xogadores que tenten atopar patróns doados de estoupar no seu comportamento. Sen embargo, o seu rendemento baixa moito contra aqueles que saquen aleatoriamente ou non o pensen demasiado.
+
+## Guía de instalación e uso.
+
+Se puede instalar este proyecto instalando el zip en el botón <>code de su página o usando git clone https://github.com/LucasTbln/RPS_Meu en git. Para usalo, hai que ter aberto o proxecto en VS code e pulsar start debugging ou en RPS_Meu.py ou en RPSLS_Meu.py
 
